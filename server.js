@@ -12,11 +12,7 @@ MongoClient.connect('mongodb+srv://sonchaemin89:e0e867e6^^**@molcham.9u8swtc.mon
 
     db=client.db('todoapp');
 
-    db.collection('post').insertOne({이름:'채민',나이:22},function(에러,결과){
-      console.log('저장완료');
-    });
-
-
+    
     app.listen('8080', function(){
       console.log('listening on 8080')
      });
@@ -46,7 +42,7 @@ app.get('/list',function(요청,응답){
 
 
   db.collection('post').find().toArray(function(에러,결과){
-    console.lof(결과);
+    console.log(결과);
   });
   응답.render('list.ejs');
 });
