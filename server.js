@@ -86,5 +86,12 @@ app.get('/detail/:id',function(요청,응답){
 
 })
 
+<<<<<<< HEAD
+=======
+
+    
+
+
+>>>>>>> 59f7d043c493f2c1f334d7141a9de4ee4e65ce56
 
     
