@@ -170,4 +170,11 @@ function 로그인했니(요청, 응답, next) {
   } 
 } 
 
+app.get('/search', (요청, 응답)=>{
+  console.log(요청.query);
+  db.collection('post').find({제목 : 요청.query.value}).toArray((에러, 결과)=>{
+    console.log(결과)
+  })
+})
+
     
