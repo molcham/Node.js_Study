@@ -1,5 +1,6 @@
 const express=require('express');
 const app=express();
+require('dotenv').config()
 const bodyParser= require('body-parser')
 app.use(bodyParser.urlencoded({extended: true}))
 const methodOverride = require('method-override')
@@ -12,13 +13,13 @@ var db;
 
 
 MongoClient.connect('mongodb+srv://sonchaemin89:e0e867e6^^**@molcham.9u8swtc.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
-    if (에러) return console.log(에러);
+    if (err) return console.log(err);
     //서버띄우는 코드 여기로 옮기기
 
     db=client.db('todoapp');
 
 
-    app.listen('8080', function(){
+    app.listen(process.env.PORT, function(){
       console.log('listening on 8080')
      });
     
