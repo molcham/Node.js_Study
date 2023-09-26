@@ -64,6 +64,7 @@ app.delete('/delete',function(요청,응답){
   //요청.body에 담겨온 게시물번호를 가진 글을 db에서 찾아서 삭제해주세요
   db.collection('post').deleteOne(요청.body,function(에러,결과){
     console.log('삭제완료');
+    응답.status(400).send({message:'성공했습니다'});
 
   })
 })
@@ -72,6 +73,22 @@ app.delete('/delete',function(요청,응답){
 app.get('/edit',function(요청,응답){
   응답.render('edit.ejs')
 })
+
+// detail로 접속하면 detail.ejs보여줌
+
+app.get('/detail/:id',function(요청,응답){
+  db.collection('post').findOne({ _id : parseInt(요청.params.id) },function(에러,결과){
+    응답.render('detail.ejs',{data:결과})
+
+
+  })
+  
+
+})
+
+
+    
+
 
 
     
