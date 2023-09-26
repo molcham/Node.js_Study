@@ -9,6 +9,17 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = 'mongodb://localhost:27017'; 
 const client = new MongoClient(uri, { useUnifiedTopology: true });
 var db;
+
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
+app.use(session({secret : '비밀코드', resave : true, saveUninitialized: false}));
+app.use(passport.initialize());
+app.use(passport.session()); 
+
+
 MongoClient.connect('mongodb+srv://sonchaemin89:e0e867e6^^**@molcham.9u8swtc.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
     if (에러) return console.log(에러);
     //서버띄우는 코드 여기로 옮기기
