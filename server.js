@@ -197,6 +197,11 @@ app.post('/register', function (요청, 응답) {
   })
 })
 
+
+app.use('/shop',require('./routes/shop.js'));
+app.use('/board/sub',require('./routes/board.js'));
+
+
  
 
     
