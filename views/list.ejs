@@ -47,13 +47,22 @@
         </div>
       </nav>
       
-      서버에서 가져온 할일 리스트 
-      <!--<% for(var i=0; i<posts.length; i++){ %>
-        <h4>할일 제목:<%=posts[i].제목%></h4>
-        <p>할일 마감날짜:<%=posts[i].날짜%></p>
-        <button>삭제</button>
+      <h4>서버에서 가져온 할일 리스트</h4>
 
-      <% } %>-->
+      <div class="container input-group mb-2">
+        <input class="form-control">
+        <button class="input-group-append btn btn-danger" id="search">검색 </button>
+
+      </div>
+
+      <script>
+        $('#search').click(function(){
+          var 입력한값 = $('#search-input').val();
+          window.location.replace('/search?value=' + 입력한값)
+        });
+      
+      </script>
+      
 
 
       <ul class="list-group">
@@ -81,11 +90,7 @@
           $.ajax({
           method:'DELETE',
           url:'/delete',
-<<<<<<< HEAD
           data:{_id:1}
-=======
-          data:{_id:} 
->>>>>>> 59f7d043c493f2c1f334d7141a9de4ee4e65ce56
 
           }).done(function(결과){
             //페이지를 강제로 새로고침해주세요 
