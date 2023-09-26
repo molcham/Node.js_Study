@@ -96,5 +96,13 @@ app.get('/edit/:id', function(요청, 응답){
   
 });
 
+app.put('/edit', function(요청, 응답){ 
+  db.collection('post').updateOne( {_id : parseInt(요청.body.id) }, {$set : { 제목 : 요청.body.title , 날짜 : 요청.body.date }}, 
+    function(){ 
+    
+    console.log('수정완료') 
+    응답.redirect('/list') 
+  }); 
+}); 
 
     
