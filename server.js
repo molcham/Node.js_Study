@@ -11,15 +11,6 @@ const client = new MongoClient(uri, { useUnifiedTopology: true });
 var db;
 
 
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const session = require('express-session');
-
-app.use(session({secret : '비밀코드', resave : true, saveUninitialized: false}));
-app.use(passport.initialize());
-app.use(passport.session()); 
-
-
 MongoClient.connect('mongodb+srv://sonchaemin89:e0e867e6^^**@molcham.9u8swtc.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
     if (에러) return console.log(에러);
     //서버띄우는 코드 여기로 옮기기
@@ -115,5 +106,41 @@ app.put('/edit', function(요청, 응답){
     응답.redirect('/list') 
   }); 
 }); 
+
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
+app.use(session({secret : '비밀코드', resave : true, saveUninitialized: false}));
+app.use(passport.initialize());
+app.use(passport.session()); 
+
+
+app.get('/login', function(요청, 응답){
+  응답.render('login.ejs')
+});
+
+
+
+
+passport.use(new LocalStrategy({
+  usernameField: 'id', //사용자가 제출한 아이디가 어디 적혔는지
+  passwordField: 'pw', // 사용자가 제출한 비번이 어디 적혔는지 
+  session: true, //세션을 만들껀지 
+  passReqToCallback: false, //아이디 비번말고 다른정보 검사가 필요한지 
+}, function (입력한아이디, 입력한비번, done) {
+  console.log(입력한아이디, 입력한비번);
+  db.collection('login').findOne({ id: 입력한아이디 }, function (에러, 결과) {
+    if (에러) return done(에러)
+
+    if (!결과) return done(null, false, { message: '존재하지않는 아이디요' })
+    if (입력한비번 == 결과.pw) {
+      return done(null, 결과)
+    } else {
+      return done(null, false, { message: '비번틀렸어요' })
+    }
+  })
+}));
 
     
