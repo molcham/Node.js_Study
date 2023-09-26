@@ -32,11 +32,14 @@ app.post('/add', function(요청, 응답){
     console.log(요청.body.title);
     db.collection('counter').findOne({name:'게시물갯수'},function(에러,결과){
       console.log(결과.totalPost)
+      var 총게시물갯수=결과.totalPost;
+
+      db.collection('post').insertOne( { _id : 총게시물갯수+1, 제목 : 요청.body.title, 날짜 : 요청.body.date } , function(){
+        console.log('저장완료')
+      });
 
     });
-    db.collection('post').insertOne( { _id:총게시물갯수+1 , 제목 : 요청.body.title, 날짜 : 요청.body.date } , function(){
-      console.log('저장완료')
-    });
+   
   });
 
   /*/list로 GET요청으로 접속하면
