@@ -148,7 +148,25 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (아이디, done) {
-  done(null, {})
-}); 
+  db.collection('login').findOne({ id: 아이디 }, function (에러, 결과) {
+    done(null, 결과)
+  })
+}); //요청.user 부분에 꽃아준다. 궁금한거 있으면 console.log()로 출력해보기 
+// 방문자가 세션아이디 쿠기가 존재하면 이 함수 덕분에 항상 요청.user라는 데이터가 존재한다. 
+
+
+app.get('/mypage', 로그인했니, function (요청, 응답) { 
+  console.log(요청.user); 
+  응답.render('mypage.ejs', {사용자:요청.user}) 
+}) 
+
+function 로그인했니(요청, 응답, next) { 
+  if (요청.user) { //요청.user는 deserializeUser가 보내준 그냥 로그인한 유저의 DB 데이터.
+    next() 
+  } 
+  else { 
+    응답.send('로그인안하셨는데요?') 
+  } 
+} 
 
     
