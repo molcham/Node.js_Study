@@ -100,13 +100,27 @@
             });
             
             
-            //4
-            var 지금누른채팅방id;
+            // 가져온 메세지 html로 보여주는 코드 
             
-            $('.list-group-item').click(function (){
-               $(this).css('background-color', '#eee');
-               지금누른채팅방id = $(this).attr('data-id');
-            });
+
+            var 지금누른채팅방id;
+            var eventSource; 
+            $('.list-group-item').click(function(){
+                지금누른채팅방id = this.dataset.id;
+                $('.chat-content').html('') //메세지들 전부 비우기
+
+                eventSource = new EventSource('/message/' + 지금누른채팅방id);
+                eventSource.addEventListener('test', function (e){
+                  console.log(e.data);
+
+                  var 가져온거 = JSON.parse(e.data); //문자보다 array,object 자료 조작이 쉽다. 
+                  가져온거.forEach((a) => {
+                     $('.chat-content').append(`<li><span class="chat-box">${a.content}</span></li>`)
+                     //jQuery를 쓰는 경우 $(원하는요소).append(html태그) 이렇게 쓰면 html 추가가 가능함. 
+                  });
+                });
+
+              });
             
             </script>
 
