@@ -251,6 +251,90 @@ app.get('/image/:imageName', function(요청, 응답){
 //dirnmae :특별한 기본변수 현재파일의 경로가 나온다.
 
 
+
+//part3.채팅방 만들기 코드 
+
+
+//서버가 post요청 받으면 채팅방 게시물 발행해주는 코드 
+app.post('/chatroom', function(요청, 응답){
+
+  var 저장할거 = {
+    title : '무슨무슨채팅방',
+    member : [ObjectId(요청.body.당한사람id), 요청.user._id],
+    date : new Date()
+  }
+
+  db.collection('chatroom').insertOne(저장할거).then(function(결과){
+    응답.send('저장완료')
+  });
+});
+
+//유저가 /chat으로 접속하면 chat.ejs 파일 보내주는 코드 
+app.get('/chat', 로그인했니, function(요청, 응답){ 
+
+  db.collection('chatroom').find({ member : 요청.user._id }).toArray().then((결과)=>{
+    console.log(결과);  // db에 insert,find,delete 이런거 하고 콜백함수 대신에 .then()붙이기 가능 
+    응답.render('chat.ejs', {data : 결과})
+  })
+
+}); 
+
+
+//채팅메세지 저장하는 코드 
+
+
+app.post('/message', 로그인했니, function(요청, 응답){
+  var 저장할거 = {
+    parent : 요청.body.parent,
+    userid : 요청.user._id,
+    content : 요청.body.content,
+    date : new Date(),
+  }
+  db.collection('message').insertOne(저장할거)
+  .then((결과)=>{
+    응답.send(결과);
+  })
+}); 
+
+//서버에서 채팅메세지 가져오는 코드
+//=> 서버랑 유저간 지속적인 소통채널 열기  
+
+
+app.get('/message/:parentid', 로그인했니, function(요청, 응답){
+
+  응답.writeHead(200, {
+    "Connection": "keep-alive",
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+  });
+
+  db.collection('message').find({ parent: 요청.params.parentid }).toArray()
+  .then((결과)=>{
+    console.log(결과);
+    응답.write('event: test\n');
+    응답.write(`data: ${JSON.stringify(결과)}\n\n`);
+  }); 
+  //JSON.stringify [],{} 자료내부에 전부 따옴표를 붙이고 싶을때, JSON자료(문자자료)취급
+  //반대로 떼고 싶다?==> JSON.parse()함수   
+  //서버와 실시간으로 소통할 때는 [],{} 와 같은것들은 주고받을 수 없음  
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
 
     
