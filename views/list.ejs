@@ -72,7 +72,7 @@
           <h4>할일 제목:<%=posts[i].제목%></h4>
           <p>할일 마감날짜:<%=posts[i].날짜%></p>
           <button class="delete" data-id="<%=posts[i]._id %>">삭제</button>
-          
+          <button class="btn btn-secondary chat" data-id="<%=posts[i].작성자%>">채팅하기</button>
         </li>
         <% } %>
         
@@ -103,8 +103,13 @@
           });
         })
 
-        
-
+        $('.chat').click(function(e){
+          var _id = e.target.dataset.id;
+          $.post('/chatroom', {당한사람id : _id})
+          .then(()=>{
+            console.log('채팅방 게시물 생성완료')
+          })
+        });
 
       </script>
 
