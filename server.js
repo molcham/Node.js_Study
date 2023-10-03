@@ -12,6 +12,22 @@ const client = new MongoClient(uri, { useUnifiedTopology: true });
 var db;
 
 
+
+let multer = require('multer');
+var storage = multer.diskStorage({
+
+  destination : function(req, file, cb){
+    cb(null, './public/image')
+  },
+  filename : function(req, file, cb){
+    cb(null, file.originalname )
+  }
+
+});
+
+var upload = multer({storage : storage}); // multer 셋팅
+
+
 MongoClient.connect('mongodb+srv://sonchaemin89:e0e867e6^^**@molcham.9u8swtc.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
     if (err) return console.log(err);
     //서버띄우는 코드 여기로 옮기기
@@ -200,6 +216,11 @@ app.post('/register', function (요청, 응답) {
 
 app.use('/shop',require('./routes/shop.js'));
 app.use('/board/sub',require('./routes/board.js'));
+
+
+app.get('/upload', function(요청, 응답){
+  응답.render('upload.ejs')
+})
 
 
  
