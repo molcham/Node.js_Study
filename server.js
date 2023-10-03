@@ -25,7 +25,24 @@ var storage = multer.diskStorage({
 
 });
 
-var upload = multer({storage : storage}); // multer 셋팅
+var path = require('path');
+
+
+var upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, callback) {
+      var ext = path.extname(file.originalname);
+      if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+          return callback(new Error('PNG, JPG만 업로드하세요'))
+      }
+      callback(null, true)
+  },
+  limits:{
+      fileSize: 1024 * 1024
+  }
+});
+
+
 
 
 MongoClient.connect('mongodb+srv://sonchaemin89:e0e867e6^^**@molcham.9u8swtc.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
@@ -217,10 +234,21 @@ app.post('/register', function (요청, 응답) {
 app.use('/shop',require('./routes/shop.js'));
 app.use('/board/sub',require('./routes/board.js'));
 
-
+// part3. 이미지 upload관련코드 
 app.get('/upload', function(요청, 응답){
   응답.render('upload.ejs')
 })
+
+app.post('/upload', upload.single('프로필'), function(요청, 응답){
+  응답.send('업로드완료')
+}); 
+
+
+// 업로드한 이미지 보여주는 이미지 API 만들기 
+app.get('/image/:imageName', function(요청, 응답){
+  응답.sendFile( __dirname + '/public/image/' + 요청.params.imageName )
+})
+//dirnmae :특별한 기본변수 현재파일의 경로가 나온다.
 
 
  
