@@ -339,6 +339,22 @@ app.get('/message/:parentid', 로그인했니, function(요청, 응답){
   });
 });
 
+//socket.io활용하여 실시간 양방향 소통
+
+
+app.get('/socket', function(요청,응답){
+  응답.render('socket.ejs')
+});
+
+io.on('connection', function(){
+  console.log('연결되었어요');
+
+  socket.on('user-send', function(data){
+    console.log(data)
+  }); //data라는 파라미터에는 유저가 보낸글이 들어있음 
+}); //웹소켓으로 서버에 connection했을때 콘솔창에 출력 
+
+
 
 
 
