@@ -1,5 +1,8 @@
 const express=require('express');
 const app=express();
+const http = require('http').createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(http);
 require('dotenv').config()
 const bodyParser= require('body-parser')
 app.use(bodyParser.urlencoded({extended: true}))
@@ -52,9 +55,9 @@ MongoClient.connect('mongodb+srv://sonchaemin89:e0e867e6^^**@molcham.9u8swtc.mon
     db=client.db('todoapp');
 
 
-    app.listen(process.env.PORT, function(){
+    http.listen(process.env.PORT, function(){
       console.log('listening on 8080')
-     });
+     });  //소켓을 뚫을 수 있는 서버로 업그레이드 해주기 
     
   })
 
@@ -318,7 +321,25 @@ app.get('/message/:parentid', 로그인했니, function(요청, 응답){
   //반대로 떼고 싶다?==> JSON.parse()함수   
   //서버와 실시간으로 소통할 때는 [],{} 와 같은것들은 주고받을 수 없음  
 
+
+
+
+  //mongo db change stream 기능 
+//==>db가 동적으로 변동사항을 감시해주도록 한다. 
+//변동사항이 생기면 서버에게 업데이트 사항을 알려줌.(실시간 서비스에 good)
+  const 찾을문서 = [
+    { $match: { 'fullDocument.parent': 요청.params.parentid } }
+  ];
+
+  const changeStream = db.collection('message').watch(찾을문서);
+  changeStream.on('change', result => {
+    console.log(result.fullDocument);
+    var 추가된문서 = [result.fullDocument];
+    응답.write(`data: ${JSON.stringify(추가된문서)}\n\n`);
+  });
 });
+
+
 
 
 
