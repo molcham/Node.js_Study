@@ -80,6 +80,38 @@
           
           </div> 
 
+          <input class="form-control" id="chat-input">
+          <button class="btn btn-secondary" id="send">전송</button>
+
+
+          <script>
+            $('#send').click(function(){
+              var 채팅내용 = $('#chat-input').val();   //1, 2
+              var 보낼거 = {
+                parent: 지금누른채팅방id,
+                content: 채팅내용,
+              };
+              
+              //3
+              $.post('/message', 보낼거).then((a) => {  
+                 console.log(a)
+              });
+            
+            });
+            
+            
+            //4
+            var 지금누른채팅방id;
+            
+            $('.list-group-item').click(function (){
+               $(this).css('background-color', '#eee');
+               지금누른채팅방id = $(this).attr('data-id');
+            });
+            
+            </script>
+
+
+
           
           
           <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
