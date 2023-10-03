@@ -141,6 +141,12 @@
                 socket.emit('user-send', '안녕하쇼')
             }); // emit()=>
                 //파라미터 2개 필요 왼쪽:이벤트명, 오른쪽:전달 데이터  
+          
+                socket.on('broadcast', function(data) {
+                    $('#content').append('<div>' + data + '</div>')
+                });//이벤트리스너 장착, 서버가 io.emit()으로 보낼때마다 
+                  //데이터수신가능 유저는 broadcast라는 이름의 데이터가 도착하면 html로 생성 
+                  // 유저간 자유롭게 채팅을 나눌 수 있는 서비스 완성 
           </script>
           
           <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
